@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Quiz Arena</h1>
+    <div id="userSection" class="user-section">
+      <!-- User info will be inserted here -->
+    </div>
+  </div>
+  
+  <p>Select a Category</p>
+
+  <div class="categories">
+    <button onclick="startQuiz('Sports')">Sports</button>
+    <button onclick="startQuiz('Entertainment')">Entertainment</button>
+    <button onclick="startQuiz('Knowledge')">Knowledge</button>
+  </div>
+
+  <div class="action-buttons">
+    <button class="leaderboard-btn" onclick="window.location.href='leaderboard.html'">🏆 Leaderboard</button>
+  </div>
+</div>
+
+<div class="footer">
+  <h3>Quiz Arena</h3>
+  <p>Test your knowledge across various categories</p>
+</div>
+
+<script src="auth.js"></script>
+<script>
+  function startQuiz(cat) {
+    if (!auth.isLoggedIn()) {
+      alert('Please login to play the quiz!');
+      window.location.href = 'auth.html';
+      return;
+    }
+    window.location.href = `quiz.html?cat=${cat}`;
+  }
+
+  function updateUserSection() {
+    const userSection = document.getElementById('userSection');
+    
+    if (auth.isLoggedIn()) {
+      const username = auth.getCurrentUser();
+      userSection.innerHTML = `
+        <span class="welcome-text">Welcome, ${username}!</span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      `;
+    } else {
+      userSection.innerHTML = `
+        <button class="login-btn" onclick="window.location.href='auth.html'">Login</button>
+      `;
+    }
+  }
+
+  function logout() {
+    auth.logout();
+    updateUserSection();
+  }
+
+  // Initialize user section on page load
+  document.addEventListener('DOMContentLoaded', updateUserSection);
+hyifrdr</script>
+
+</body>
+</html>
